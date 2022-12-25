@@ -4,25 +4,29 @@ Parameters:
     Description: Existing Bucket name
     Type: String
 Resources:
-  cloudfrontOAI
+  cloudfrontOAI:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties: 
       CloudFrontOriginAccessIdentityConfig: 
-        CloudFrontOriginAccessIdentityConfig
-        
- webpagecdn
-  Type: AWS::CloudFront::Distribution
-  Properties:
-    DistributionConfig:
-     Origins: 
-           - DomainName: !Sub "${PipelineID}.s3.amazonaws.com"
-             Id: webpage
-             S3OriginConfig:
-              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${cloudfrontOAI}"     
-     Enabled: True
-     DefaultRootObject: index.html
-     DefaultCacheBehavior:
-       ForwardedValues:
-          QueryString: False
-       TargetOriginId: webpage
-       ViewerProtocolPolicy: allow-all    
+        Comment: Origin Access Identity for Serverless Static Website   
+  webpagecdn:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins: 
+             - DomainName: !Sub "${PipelineID}.s3.amazonaws.com"
+               Id: webpage
+               S3OriginConfig:
+                OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${cloudfrontOAI}"     
+        Enabled: True
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          ForwardedValues:
+            QueryString: False
+          TargetOriginId: webpage
+          ViewerProtocolPolicy: allow-all
+Outputs:
+  PipelineID:
+    Value: !Sub ${PipelineID}
+    Export:
+      Name: PipelineID
