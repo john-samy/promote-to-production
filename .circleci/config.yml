@@ -7,7 +7,7 @@ orbs:
   aws-cli: circleci/aws-cli@2.0.3
 # Orchestrate or schedule a set of jobs
 
-
+jobs:
   create_and_deploy_front_end:
     docker:
       - image: amazon/aws-cli
@@ -41,4 +41,12 @@ orbs:
           root: ~/
           paths: 
             - textfile.txt 
+workflows:
+  # Name the workflow "welcome"
+  my_workflow:
+    jobs:
+      - create_and_deploy_front_end
+      - promote_to_production:
+          requires: 
+            - create_and_deploy_front_end
  
