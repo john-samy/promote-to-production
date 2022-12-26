@@ -51,8 +51,8 @@ jobs:
           command: |
             aws cloudformation deploy \
             --template-file cloudfront.yml \
-            --stack-name production-distro \
-            --parameter-overrides PipelineID="mmybucket-1a6cc2f"
+            --stack-name prod-dist-test \
+            --parameter-overrides PipelineID="mybucket-1a6cc2f"
 workflows:
   # Name the workflow "welcome"
   my_workflow:
